@@ -10,7 +10,7 @@ import Avatar from "@mui/material/Avatar";
 import { deepPurple } from "@mui/material/colors";
 import { Button, Menu, MenuItem } from "@mui/material";
 import { navigation } from "./NavData";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import AuthModal from "../../Auth/AuthModal";
 import { useDispatch, useSelector } from "react-redux";
 import { getUser, logout } from "../../../State/Auth/Action";
@@ -26,11 +26,11 @@ export default function Navbar() {
   const [openAuthModel, setOpenAuthModel] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const openUserMenu = Boolean(anchorEl);
-  const jwt = localStorage.getItem("jwt")
-  const {auth} = useSelector(store=>store) 
+  const jwt = localStorage.getItem("jwt");
+  const { auth, cart } = useSelector((store) => store);
   const dispatch = useDispatch();
   const location = useLocation();
-
+  // console.log("hello go cart", cart.cartItems.length);
   const handelUserClick = (e) => {
     setAnchorEl(e.currentTarget);
   };
@@ -45,30 +45,29 @@ export default function Navbar() {
   const handleClose = () => {
     setOpenAuthModel(false);
   };
-  const handleCategoryClick = (category, section, item,close) => {
+  const handleCategoryClick = (category, section, item, close) => {
     navigate(`/${category.id}/${section.id}/${item.name}`);
     close();
   };
 
-  const handleLogout = ()=>{
-    dispatch(logout())
-    handleCloseUserMenu()
-  }
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate("/");
+    handleCloseUserMenu();
+  };
 
-  useEffect(()=>{
-    if(jwt) 
-        dispatch(getUser(jwt))
-},[jwt,auth.jwt])
+  useEffect(() => {
+    if (jwt) dispatch(getUser(jwt));
+  }, [jwt, auth.jwt]);
 
-
-  useEffect(()=> {
-    if(auth.user){
-      handleClose()
+  useEffect(() => {
+    if (auth.user) {
+      handleClose();
     }
-    if(location.pathname==='/login'|| location.pathname==='/register'){
-      navigate(-1)
+    if (location.pathname === "/login" || location.pathname === "/register") {
+      navigate(-1);
     }
-  },[auth.user])
+  }, [auth.user]);
 
   return (
     <div className="bg-white">
@@ -264,14 +263,14 @@ export default function Navbar() {
 
               {/* Logo */}
               <div className="ml-4 flex lg:ml-0">
-                <a href="#">
-                  <span className="sr-only">Your Company</span>
+                <span className="sr-only">Your Company</span>
+                <Button onClick={() => navigate("/")}>
                   <img
                     className="h-8 w-auto"
-                    src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+                    src="https://img.lovepik.com/free-png/20210918/lovepik-shopping-cart-png-image_400246975_wh1200.png"
                     alt=""
                   />
-                </a>
+                </Button>
               </div>
 
               {/* Flyout menus */}
@@ -410,7 +409,7 @@ export default function Navbar() {
                   {auth.user?.firstName ? (
                     <div>
                       <Avatar
-                        className="texxt-white"
+                        className="text-white"
                         onClick={handelUserClick}
                         aria-controls={open ? "basic-menu" : undefined}
                         aria-haspopup="true"
@@ -433,15 +432,35 @@ export default function Navbar() {
                           "aria-labelledby": "basic-button",
                         }}
                       >
-                        <MenuItem onClick={handleCloseUserMenu}>
+                        <MenuItem
+                          onClick={() => {
+                            navigate("/profile", {
+                              state: { user: auth?.user },
+                            });
+                            handleCloseUserMenu();
+                          }}
+                        >
                           Profile
                         </MenuItem>
-                        <MenuItem onClick={()=>{navigate("/account/order")}}>
+                        {auth.user?.role === "admin" ? (
+                          <MenuItem
+                            onClick={() => {
+                              navigate("/admin");
+                              handleCloseUserMenu();
+                            }}
+                          >
+                            Admin Panel
+                          </MenuItem>
+                        ) : null}
+                        <MenuItem
+                          onClick={() => {
+                            navigate("/account/order");
+                            handleCloseUserMenu();
+                          }}
+                        >
                           My Orders
                         </MenuItem>
-                        <MenuItem onClick={handleLogout} >
-                          Logout
-                        </MenuItem>
+                        <MenuItem onClick={handleLogout}>Logout</MenuItem>
                       </Menu>
                     </div>
                   ) : (
@@ -452,11 +471,10 @@ export default function Navbar() {
                       Signin
                     </Button>
                   )}
-                  
                 </div>
 
                 {/* Search */}
-                <div className="flex lg:ml-6">
+                {/* <div className="flex lg:ml-6">
                   <p className="p-2 text-gray-400 hover:text-gray-500">
                     <span className="sr-only">Search</span>
                     <MagnifyingGlassIcon
@@ -464,17 +482,20 @@ export default function Navbar() {
                       aria-hidden="true"
                     />
                   </p>
-                </div>
+                </div> */}
 
                 {/* Cart */}
                 <div className="ml-4 flow-root lg:ml-6">
-                  <Button className="group -m-2 flex items-center p-2">
+                  <Button
+                    className="group -m-2 flex items-center p-2"
+                    onClick={() => navigate("/cart")}
+                  >
                     <ShoppingBagIcon
                       className="h-6 w-6 flex-shrink-0 text-gray-400 group-hover:text-gray-500"
                       aria-hidden="true"
                     />
                     <span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">
-                      2
+                      {cart.cartItems.length}
                     </span>
                     <span className="sr-only">items in cart, view bag</span>
                   </Button>
@@ -484,7 +505,7 @@ export default function Navbar() {
           </div>
         </nav>
       </header>
-      <AuthModal handleClose={handleClose} open={openAuthModel}/>
+      <AuthModal handleClose={handleClose} open={openAuthModel} />
     </div>
   );
 }

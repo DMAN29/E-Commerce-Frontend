@@ -22,10 +22,7 @@ const OrderSummery = () => {
   };
   return (
     <div className=" mt-5 w-10/12 mx-auto">
-      <AddressCard
-        address={order.order?.shippingAddress}
-        btnText="Change Address"
-      />
+      <AddressCard address={order.order?.shippingAddress} />
       <div className="lg:grid grid-cols-3 space-x-8 relative mt-5">
         <div className=" col-span-2 space-y-5">
           {order.order?.orderItems.map((item) => (

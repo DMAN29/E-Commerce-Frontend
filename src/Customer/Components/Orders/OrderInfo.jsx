@@ -1,60 +1,74 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Box from "@mui/material/Box";
-
 import { Button } from "@mui/material";
 import StarOutlineIcon from "@mui/icons-material/StarOutline";
 import OrderTracker from "./OrderTracker";
 import AddressCard from "../Address/AddressCard";
-
-const steps = [
-  "Placed",
-  "Order Confirmed",
-  "Shipped",
-  "Out For Delivery",
-  "Delivered",
-];
+import { useDispatch, useSelector } from "react-redux";
+import { getOrderById } from "../../../State/Order/Action";
+import { useParams } from "react-router-dom";
 
 const OrderInfo = () => {
   const [activeStep, setActiveStep] = React.useState(0);
+  const dispatch = useDispatch();
+  const { orderId } = useParams();
+  const { order } = useSelector((store) => store);
+  // console.log(order.order.shippingAddress);
+  useEffect(() => {
+    dispatch(getOrderById(orderId));
+  }, []);
+
+  useEffect(() => {
+    if (order && order.order && order.order.orderStatus) {
+      switch (order?.order?.orderStatus) {
+        case "SHIPPED":
+          setActiveStep(2);
+          break;
+        case "DELIVERED":
+          setActiveStep(3);
+          break;
+        case "CONFIRMED":
+          setActiveStep(1);
+          break;
+        default:
+          setActiveStep(0);
+      }
+    }
+  }, [order]);
 
   return (
     <div className="w-10/12 mx-auto mt-5">
       <div className="shadow">
-        <AddressCard btnText="" />
+        <AddressCard address={order.order.shippingAddress} />
       </div>
       <div className="border mt-5 pt-5 pb-16 md:pt-16 shadow relative">
-        <Box sx={{ width: "100%" }}></Box>
-        <OrderTracker activeStep={activeStep} />
-        <Button
-          color="secondary"
-          sx={{
-            fontSize: { xs: 12, md: 14, xl: 18 },
-            paddingRight: { xs: 2, md: 5, xl: 10 },
-            position: "absolute",
-            right: 5,
-            bottom: 20,
-          }}
-        >
-          Cancel Order
-        </Button>
+        <Box sx={{ width: "100%" }}>
+          <OrderTracker activeStep={activeStep} />
+        </Box>
       </div>
-      {[1, 1, 1, 1, 1].map((item, index) => (
-        <div className="flex justify-between items-center border shadow my-5">
+      {order.order?.orderItems?.map((item, index) => (
+        <div
+          key={index}
+          className="flex justify-between items-center border shadow my-5"
+        >
           <div className="flex items-center w-1/2">
             <div className="p-4 ">
               <img
-                src="https://rukminim1.flixcart.com/image/612/612/xif0q/lehenga-choli/y/g/m/l-sleeveless-shset95222-shae-by-sassafras-original-imaggjzkwyyyezzg.jpeg?q=70"
+                src={item.product.imageUrl}
                 alt=""
                 className="w-[8rem] h-[8rem] object-cover"
               />
             </div>
             <div>
-              <p className="text-xl font-semibold my-2">OnePlus NeckBand</p>
-              <p className="opacity-60">
-                Color : Black &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Quantity : 1
+              <p className="text-xl font-semibold my-2">{item.product.brand}</p>
+              <p className="font-semibold text-lg mt-2">{item.product.title}</p>
+              <p className="font-semibold text-lg">
+                Price : &#8377;{item.discountedPrice}{" "}
               </p>
-              <p className="font-semibold text-lg mt-2">Seller : Oneplus</p>
-              <p className="font-semibold text-lg">Price : &#8377;1099 </p>
+              <p className="opacity-60">
+                Color : {item.product.color} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                Quantity : {item.quantity}
+              </p>
             </div>
           </div>
           <Button color="secondary" sx={{ marginX: 5, fontSize: 18 }}>

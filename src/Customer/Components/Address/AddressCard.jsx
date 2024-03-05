@@ -1,8 +1,17 @@
 import { Button } from "@mui/material";
 import React from "react";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { createOrder } from "../../../State/Order/Action";
 
 const AddressCard = ({ address, btnText }) => {
-  console.log("address", address);
+  // console.log("address", address);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const handleCreateOrder = () => {
+    const orderData = { address, navigate };
+    dispatch(createOrder(orderData));
+  };
   return (
     <div className=" px-2 py-2 md:py-5 text-xs md:text-sm xl:text-base relative">
       <h2 className="text-base md:text-lg xl:text-xl font-semibold py-2">
@@ -14,7 +23,7 @@ const AddressCard = ({ address, btnText }) => {
         Phone Number :
       </h4>
       <span>{" " + address?.mobile}</span>
-      {btnText.length !== 0 && (
+      {btnText !== undefined ? (
         <Button
           variant="contained"
           color="secondary"
@@ -26,10 +35,11 @@ const AddressCard = ({ address, btnText }) => {
             bottom: { xl: 16 },
             marginTop: 1,
           }}
+          onClick={handleCreateOrder}
         >
           {btnText}
         </Button>
-      )}
+      ) : null}
     </div>
   );
 };

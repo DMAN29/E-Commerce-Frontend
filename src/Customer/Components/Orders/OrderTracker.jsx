@@ -4,13 +4,7 @@ import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 
 const OrderTracker = ({ activeStep }) => {
-  const steps = [
-    "Placed",
-    "Order Confirmed",
-    "Shipped",
-    "Out For Delivery",
-    "Delivered",
-  ];
+  const steps = ["Placed", "Order Confirmed", "Shipped", "Delivered"];
 
   return (
     <Stepper

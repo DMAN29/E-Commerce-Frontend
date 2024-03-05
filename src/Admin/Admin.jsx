@@ -35,8 +35,6 @@ const menu = [
 ];
 const Admin = () => {
   const theme = useTheme();
-  const isLargeScreen = useMediaQuery(theme.breakpoints.up("lg"));
-  const [sideBarVisible, setSizeBarVisible] = useState(false);
   const navigate = useNavigate();
 
   const drawer = (
@@ -50,7 +48,6 @@ const Admin = () => {
         width: "250px",
       }}
     >
-      {/* {isLargeScreen && <Toolbar />} */}
       <List>
         {menu.map((item, index) => (
           <ListItem
@@ -71,7 +68,7 @@ const Admin = () => {
             <ListItemIcon>
               <AccountCircleIcon />
             </ListItemIcon>
-            <ListItemText>Account</ListItemText>
+            <ListItemText onClick={() => navigate("/")}>Account</ListItemText>
           </ListItemButton>
         </ListItem>
       </List>
