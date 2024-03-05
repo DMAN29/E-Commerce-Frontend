@@ -66,12 +66,12 @@ const PaymentSuccess = () => {
                   <div className="ml-5 space-y-2">
                     <p>{item.product.title}</p>
                     <div className="opacity-50 text-sm font-semibold space-x-5">
-                      <span>Color : {item.color}</span>
+                      <span>Color : {item.product.color}</span>
                       <span>Size : {item.size}</span>
                       <span>Quantity : {item.quantity}</span>
                     </div>
                     <p>Seller : {item.product.brand}</p>
-                    <p>&#8377; {item.price}</p>
+                    <p>&#8377; {item.discountedPrice}</p>
                   </div>
                 </div>
               </Grid>
