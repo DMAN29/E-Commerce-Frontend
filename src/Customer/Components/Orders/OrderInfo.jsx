@@ -39,7 +39,7 @@ const OrderInfo = () => {
   return (
     <div className="w-10/12 mx-auto mt-5">
       <div className="shadow">
-        <AddressCard address={order.order.shippingAddress} />
+        <AddressCard address={order.order?.shippingAddress} />
       </div>
       <div className="border mt-5 pt-5 pb-16 md:pt-16 shadow relative">
         <Box sx={{ width: "100%" }}>
