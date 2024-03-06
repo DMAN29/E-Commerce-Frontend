@@ -58,8 +58,48 @@ const CreateProductForm = () => {
     dispatch(createProduct(productData));
     alert("Product Added Successfully");
     navigate("/admin");
-    console.log(productData);
   };
+  const renderThirdLevelOptions = () => {
+    if (
+      productData.topLevelCategory === "men" &&
+      productData.secondLevelCategory === "clothing"
+    ) {
+      return [
+        <MenuItem value="shirt">Shirt</MenuItem>,
+        <MenuItem value="jeans">Jeans</MenuItem>,
+        <MenuItem value="t-shirts">T-Shirt</MenuItem>,
+      ];
+    } else if (
+      productData.topLevelCategory === "women" &&
+      productData.secondLevelCategory === "clothing"
+    ) {
+      return [
+        <MenuItem value="tops">Tops</MenuItem>,
+        <MenuItem value="dresses">Dresses</MenuItem>,
+        <MenuItem value="w-jeans">Jeans</MenuItem>,
+      ];
+    } else if (
+      productData.topLevelCategory === "women" &&
+      productData.secondLevelCategory === "accessories"
+    ) {
+      return [
+        <MenuItem value="purse">Purse</MenuItem>,
+        <MenuItem value="watches">Watches</MenuItem>,
+        <MenuItem value="sunglasses">Sunglass</MenuItem>,
+      ];
+    } else if (
+      productData.topLevelCategory === "men" &&
+      productData.secondLevelCategory === "accessories"
+    ) {
+      return [
+        <MenuItem value="watches">Watches</MenuItem>,
+        <MenuItem value="sunglasses">Sunglass</MenuItem>,
+      ];
+    } else {
+      return null;
+    }
+  };
+
   return (
     <>
       <Typography variant="h3" sx={{ textAlign: "center", pt: 5 }}>
@@ -103,7 +143,7 @@ const CreateProductForm = () => {
               onChange={handleChange}
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12} sm={4}>
             <TextField
               fullWidth
               label="Price"
@@ -112,13 +152,25 @@ const CreateProductForm = () => {
               onChange={handleChange}
             />
           </Grid>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12} sm={4}>
             <TextField
               fullWidth
               label="Discount Percent"
               name="discountedPrecent"
               value={productData.discountedPrecent}
               onChange={handleChange}
+            />
+          </Grid>
+          <Grid item xs={12} sm={4}>
+            <TextField
+              fullWidth
+              label="Discounted Price"
+              name="Discounted Price"
+              value={Math.floor(
+                productData.price -
+                  (productData.discountedPrecent / 100) * productData.price
+              )}
+              inputProps={{ readOnly: true }}
             />
           </Grid>
           <Grid item xs={6} sm={4}>
@@ -146,11 +198,10 @@ const CreateProductForm = () => {
               >
                 <MenuItem value="clothing">Clothing</MenuItem>
                 <MenuItem value="accessories">Accessories</MenuItem>
-                <MenuItem value="brands">Brands</MenuItem>
               </Select>
             </FormControl>
           </Grid>
-          <Grid item xs={6} sm={4}>
+          <Grid item xs={12} sm={4}>
             <FormControl fullWidth>
               <InputLabel>Third Level Category</InputLabel>
               <Select
@@ -159,13 +210,11 @@ const CreateProductForm = () => {
                 onChange={handleChange}
                 label="Third Level Category"
               >
-                <MenuItem value="top">Tops</MenuItem>
-                <MenuItem value="women_dress">Dresses</MenuItem>
-                <MenuItem value="shirt">Shirt</MenuItem>
-                <MenuItem value="jeans">Jeans</MenuItem>
+                {renderThirdLevelOptions()}
               </Select>
             </FormControl>
           </Grid>
+
           <Grid item xs={12}>
             <TextField
               fullWidth
@@ -186,7 +235,6 @@ const CreateProductForm = () => {
                   name="name"
                   inputProps={{ readOnly: true }}
                   value={size.name}
-                  onChange={(e) => handleSizeChange(e, index)}
                   required
                 />
               </Grid>

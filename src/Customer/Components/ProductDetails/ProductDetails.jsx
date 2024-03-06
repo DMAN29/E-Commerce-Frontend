@@ -7,64 +7,22 @@ import { Button, Grid, LinearProgress, Rating } from "@mui/material";
 import ProductCard from "../product/ProductCard";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { findProductsById } from "../../../State/Product/Action";
+import { findProducts, findProductsById } from "../../../State/Product/Action";
 import { addItemToCart } from "../../../State/Cart/Action";
 import { dress } from "../../../Data/Women/dress";
-
-const product = {
-  name: "Basic Tee 6-Pack",
-  price: "$192",
-  href: "#",
-  breadcrumbs: [
-    { id: 1, name: "Men", href: "#" },
-    { id: 2, name: "Clothing", href: "#" },
-  ],
-  images: [
-    {
-      src: "https://tailwindui.com/img/ecommerce-images/product-page-02-secondary-product-shot.jpg",
-      alt: "Two each of gray, white, and black shirts laying flat.",
-    },
-    {
-      src: "https://tailwindui.com/img/ecommerce-images/product-page-02-tertiary-product-shot-01.jpg",
-      alt: "Model wearing plain black basic tee.",
-    },
-    {
-      src: "https://tailwindui.com/img/ecommerce-images/product-page-02-tertiary-product-shot-02.jpg",
-      alt: "Model wearing plain gray basic tee.",
-    },
-    {
-      src: "https://tailwindui.com/img/ecommerce-images/product-page-02-featured-product-shot.jpg",
-      alt: "Model wearing plain white basic tee.",
-    },
-  ],
-  colors: [
-    { name: "White", class: "bg-white", selectedClass: "ring-gray-400" },
-    { name: "Gray", class: "bg-gray-200", selectedClass: "ring-gray-400" },
-    { name: "Black", class: "bg-gray-900", selectedClass: "ring-gray-900" },
-  ],
-  sizes: [
-    { name: "S", inStock: true },
-    { name: "M", inStock: true },
-    { name: "L", inStock: true },
-    { name: "XL", inStock: true },
-  ],
-  description:
-    'The Basic Tee 6-Pack allows you to fully express your vibrant personality with three grayscale options. Feeling adventurous? Put on a heather gray tee. Want to be a trendsetter? Try our exclusive colorway: "Black". Need to add an extra pop of color to your outfit? Our white tee has you covered.',
-  highlights: [
-    "Hand cut and sewn locally",
-    "Dyed with our proprietary colors",
-    "Pre-washed & pre-shrunk",
-    "Ultra-soft 100% cotton",
-  ],
-  details:
-    'The 6-Pack includes two black, two white, and two heather gray Basic Tees. Sign up for our subscription service and be the first to get new, exciting colors, like our upcoming "Charcoal Gray" limited release.',
-};
+import CarouselCards from "../home/CarouselCards";
+import SectionCarousel from "../home/SectionCarousel";
 
 const reviews = { href: "#", average: 4, totalCount: 117 };
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
-
+const sizes = [
+  { name: "S", inStock: true },
+  { name: "M", inStock: true },
+  { name: "L", inStock: true },
+  { name: "XL", inStock: true },
+];
 export default function ProductDetails() {
   const [selectedSize, setSelectedSize] = useState("");
 
@@ -81,50 +39,43 @@ export default function ProductDetails() {
   };
 
   const { products } = useSelector((store) => store);
+
   useEffect(() => {
     const data = { productId: params.productId };
     dispatch(findProductsById(data));
   }, [params.productId]);
 
+  const [similarProducts, setSimilarProducts] = useState([]);
+
+  useEffect(() => {
+    if (products.product) {
+      dispatch(
+        findProducts({
+          category: products.product?.category.name,
+          colors: [],
+          sizes: [],
+          minPrice: 0,
+          maxPrice: 10000,
+          minDiscount: 0,
+          sort: "price_low",
+          pageNumber: 0,
+          pageSize: 12,
+          stock: null,
+        })
+      );
+    }
+  }, [dispatch, products.product]);
+
+  useEffect(() => {
+    if (products.products && products.products.content?.length > 0) {
+      setSimilarProducts(products.products.content);
+    }
+  }, [products.products]);
+
   return (
     <div className="bg-white">
-      <nav aria-label="Breadcrumb">
-        <ol
-          role="list"
-          className="mx-auto flex items-center space-x-2 px-4 sm:px-6 lg:px-8 py-3 w-10/12 mt-3 md:mt-6"
-        >
-          {product.breadcrumbs.map((breadcrumb) => (
-            <li key={breadcrumb.id}>
-              <div className="flex items-center">
-                <a
-                  href={breadcrumb.href}
-                  className="mr-2 text-sm font-medium text-gray-900"
-                >
-                  {breadcrumb.name}
-                </a>
-                <svg
-                  width={16}
-                  height={20}
-                  viewBox="0 0 16 20"
-                  fill="currentColor"
-                  aria-hidden="true"
-                  className="h-5 w-4 text-gray-300"
-                >
-                  <path d="M5.697 4.34L8.98 16.532h1.327L7.025 4.341H5.697z" />
-                </svg>
-              </div>
-            </li>
-          ))}
-          <li className="text-sm">
-            <a
-              href={product.href}
-              aria-current="page"
-              className="font-medium text-gray-500 hover:text-gray-600"
-            >
-              {product.name}
-            </a>
-          </li>
-        </ol>
+      <nav className="mx-auto flex items-center space-x-2 px-4 sm:px-6 lg:px-8 py-3 w-10/12 mt-3 md:mt-6 font-bold text-gray-600">
+        {`${products.product.category.parentCategory.parentCategory.name.toUpperCase()} / ${products.product.category.parentCategory.name.toUpperCase()} / ${products.product.category.name.toUpperCase()}`}
       </nav>
       <div className="pt-6 md:flex w-10/12 mx-auto ">
         {/* Image gallery */}
@@ -133,19 +84,9 @@ export default function ProductDetails() {
             <div>
               <img
                 src={products.product?.imageUrl}
-                alt={product.images[0].alt}
+                alt=""
                 className="h-80 md:h-[24rem] lg:h-[29rem] xl:h-[36rem] w-full object-cover object-center"
               />
-            </div>
-            <div className="grid grid-cols-4">
-              {[1, 1, 1, 1].map((item, index) => (
-                <img
-                  key={index}
-                  src={product.images[index].src}
-                  alt={product.images[index].alt}
-                  className="object-cover object-center p-2 rounded-xl h-24 xl:h-36 w-36"
-                />
-              ))}
             </div>
           </div>
         </div>
@@ -220,7 +161,7 @@ export default function ProductDetails() {
                     Choose a size
                   </RadioGroup.Label>
                   <div className="grid grid-cols-4 gap-4 sm:grid-cols-8 lg:grid-cols-4">
-                    {product.sizes.map((size) => (
+                    {sizes.map((size) => (
                       <RadioGroup.Option
                         key={size.name}
                         value={size}
@@ -306,28 +247,6 @@ export default function ProductDetails() {
                 <p className="text-sm xl:text-base text-gray-900">
                   {products.product?.description}
                 </p>
-              </div>
-            </div>
-
-            <div className="mt-5">
-              <h3 className="text-sm font-medium text-gray-900">Highlights</h3>
-
-              <div className="mt-4">
-                <ul role="list" className="list-disc space-y-2 pl-4 text-sm">
-                  {product.highlights.map((highlight) => (
-                    <li key={highlight} className="text-gray-400">
-                      <span className="text-gray-600">{highlight}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-
-            <div className="mt-10">
-              <h2 className="text-sm font-medium text-gray-900">Details</h2>
-
-              <div className="mt-4 space-y-6">
-                <p className="text-sm text-gray-600">{product.details}</p>
               </div>
             </div>
           </div>
@@ -433,9 +352,7 @@ export default function ProductDetails() {
         Similar Products
       </h2>
       <div className="flex flex-wrap w-10/12 mx-auto mb-10 ">
-        {dress.map((data, index) => (
-          <ProductCard key={index} product={data} />
-        ))}
+        <SectionCarousel data={similarProducts} />
       </div>
     </div>
   );

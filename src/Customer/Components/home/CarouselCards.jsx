@@ -1,17 +1,29 @@
-import React from 'react'
+import React from "react";
+import { useNavigate } from "react-router-dom";
 
-const CarouselCards = ({product}) => {
-  return <>
-    <div className='cursor-pointer bg-white flex flex-col items-center shadow-lg overflow-hidden w-60 mx-3 rounded-lg'>
-        <div className='h-52 w-40'>
-            <img className="object-cover object-top w-full h-full rounded-md mt-2" src={product.imageUrl} alt="" />
+const CarouselCards = ({ product }) => {
+  const navigate = useNavigate();
+
+  return (
+    <>
+      <div
+        className="cursor-pointer bg-white flex flex-col items-center shadow-lg overflow-hidden w-60 mx-3 rounded-lg"
+        onClick={() => navigate(`/product/${product.id}`)}
+      >
+        <div className="h-52 w-40">
+          <img
+            className="object-cover object-top w-full h-full rounded-md mt-2"
+            src={product.imageUrl}
+            alt=""
+          />
         </div>
         <div className="p-4">
-            <h2 className='text-lg font-semibold '>{product.brand}</h2>
-            <p className='text-gray-600'>{product.title}</p>
+          <h2 className="text-lg font-semibold ">{product.brand}</h2>
+          <p className="text-gray-600">{product.title}</p>
         </div>
-    </div>
-  </>
-}
+      </div>
+    </>
+  );
+};
 
-export default CarouselCards
+export default CarouselCards;
