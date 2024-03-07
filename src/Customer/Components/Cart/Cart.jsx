@@ -36,7 +36,7 @@ const Cart = () => {
             </h2>
             <hr className="border" />
             <p className="flex text-sm xl:text-base justify-between">
-              <span>Price (3 item)</span>
+              <span>Price ({cart.cart?.totalItem} item)</span>
               <span>&#8377;{cart.cart?.totalPrice}</span>
             </p>
             <p className="flex text-sm xl:text-base justify-between">

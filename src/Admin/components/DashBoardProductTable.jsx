@@ -27,7 +27,7 @@ const DashBoardProductTable = () => {
       minDiscount: 0,
       sort: "price_low",
       pageNumber: 0,
-      pageSize: 10,
+      pageSize: 10000,
       stock: "",
     };
 
@@ -37,7 +37,7 @@ const DashBoardProductTable = () => {
   return (
     <>
       <Card className="mt-2 p-5">
-        <CardHeader title="All Products" />
+        <CardHeader title="Recently Added Products" />
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
             <TableHead>
@@ -51,8 +51,8 @@ const DashBoardProductTable = () => {
             </TableHead>
             <TableBody>
               {products.products.content
-                ?.slice() // Make a shallow copy of the array
-                .reverse() // Reverse the order of the array
+                ?.slice(-10)
+                .reverse()
                 .map((item) => (
                   <TableRow
                     key={item.name}

@@ -37,7 +37,7 @@ const DashBoardOrderTable = () => {
   ]);
 
   // Reverse the order of the array
-  const reversedOrders = adminOrder.orders?.slice().reverse();
+  const reversedOrders = adminOrder.orders?.slice(-10).reverse();
 
   // console.log("Admin Orders", adminOrder);
   return (
