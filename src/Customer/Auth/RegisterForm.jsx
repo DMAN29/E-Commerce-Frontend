@@ -22,7 +22,7 @@ const RegisterForm = () => {
       lastName: data.get("lastName"),
       email: data.get("email"),
       password: data.get("password"),
-      role: "admin",
+      role: "customer",
     };
     dispatch(register(userData));
     console.log("userData", userData);
