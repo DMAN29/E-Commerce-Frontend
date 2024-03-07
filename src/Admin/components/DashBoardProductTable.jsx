@@ -1,6 +1,5 @@
 import {
   Avatar,
-  Button,
   Card,
   CardHeader,
   Paper,
@@ -15,7 +14,7 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteProduct, findProducts } from "../../State/Product/Action";
 
-const ProductsTable = () => {
+const DashBoardProductTable = () => {
   const dispatch = useDispatch();
   const { products } = useSelector((store) => store);
   useEffect(() => {
@@ -28,19 +27,12 @@ const ProductsTable = () => {
       minDiscount: 0,
       sort: "price_low",
       pageNumber: 0,
-      pageSize: 10000,
+      pageSize: 10,
       stock: "",
     };
 
     dispatch(findProducts(data));
   }, [products.deletedProduct]);
-
-  // Reverse the content array
-  const reversedContent = products.products.content?.slice().reverse();
-
-  const handleProductDelete = (productId) => {
-    dispatch(deleteProduct(productId));
-  };
 
   return (
     <>
@@ -55,33 +47,26 @@ const ProductsTable = () => {
                 <TableCell>Category</TableCell>
                 <TableCell>Price</TableCell>
                 <TableCell>Quantity</TableCell>
-                <TableCell>Delete</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {reversedContent?.map((item) => (
-                <TableRow
-                  key={item.name}
-                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                >
-                  <TableCell>
-                    <Avatar src={item.imageUrl}></Avatar>
-                  </TableCell>
-                  <TableCell scope="row">{item.title}</TableCell>
-                  <TableCell>{item.category.name}</TableCell>
-                  <TableCell>{item.discountedPrice}</TableCell>
-                  <TableCell>{item.quantity}</TableCell>
-                  <TableCell>
-                    <Button
-                      variant="outlined"
-                      color="error"
-                      onClick={() => handleProductDelete(item.id)}
-                    >
-                      Delete
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
+              {products.products.content
+                ?.slice() // Make a shallow copy of the array
+                .reverse() // Reverse the order of the array
+                .map((item) => (
+                  <TableRow
+                    key={item.name}
+                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                  >
+                    <TableCell>
+                      <Avatar src={item.imageUrl}></Avatar>
+                    </TableCell>
+                    <TableCell scope="row">{item.title}</TableCell>
+                    <TableCell>{item.category.name}</TableCell>
+                    <TableCell>{item.discountedPrice}</TableCell>
+                    <TableCell>{item.quantity}</TableCell>
+                  </TableRow>
+                ))}
             </TableBody>
           </Table>
         </TableContainer>
@@ -90,4 +75,4 @@ const ProductsTable = () => {
   );
 };
 
-export default ProductsTable;
+export default DashBoardProductTable;

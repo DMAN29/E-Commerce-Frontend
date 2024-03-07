@@ -61,7 +61,9 @@ const OrdersTable = () => {
     dispatch(deleteOrder(orderId));
   };
 
-  // console.log("Admin Orders", adminOrder);
+  // Reverse the orders array
+  const reversedOrders = adminOrder.orders?.slice().reverse();
+
   return (
     <>
       <Card className="mt-2 p-5">
@@ -80,7 +82,7 @@ const OrdersTable = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {adminOrder.orders?.map((item, index) => (
+              {reversedOrders?.map((item, index) => (
                 <TableRow
                   key={item.name}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}

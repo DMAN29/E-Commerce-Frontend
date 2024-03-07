@@ -1,4 +1,7 @@
 import {
+  GET_ALL_USER_FAILURE,
+  GET_ALL_USER_REQUEST,
+  GET_ALL_USER_SUCCESS,
   GET_USER_FAILURE,
   GET_USER_REQUEST,
   GET_USER_SUCCESS,
@@ -13,7 +16,8 @@ import {
 
 const initialState = {
   user: null,
-  isLoding: false,
+  users: [],
+  isLoading: false,
   error: null,
   jwt: null,
 };
@@ -23,18 +27,22 @@ export const authReducer = (state = initialState, action) => {
     case REGISTER_REQUEST:
     case LOGIN_REQUEST:
     case GET_USER_REQUEST:
-      return { ...state, isLoding: true, error: null };
+    case GET_ALL_USER_REQUEST:
+      return { ...state, isLoading: true, error: null };
 
     case REGISTER_SUCCESS:
     case LOGIN_SUCCESS:
-      return { ...state, isLoding: false, erroe: null, jwt: action.payload };
+      return { ...state, isLoading: false, error: null, jwt: action.payload };
     case GET_USER_SUCCESS:
-      return { ...state, isLoding: false, error: null, user: action.payload };
+      return { ...state, isLoading: false, error: null, user: action.payload };
+    case GET_ALL_USER_SUCCESS:
+      return { ...state, isLoading: false, error: null, users: action.payload };
 
     case REGISTER_FAILURE:
     case LOGIN_FAILURE:
     case GET_USER_FAILURE:
-      return { ...state, isLoding: false, error: action.payload };
+    case GET_ALL_USER_FAILURE:
+      return { ...state, isLoading: false, error: action.payload };
 
     case LOGOUT:
       return { ...initialState };

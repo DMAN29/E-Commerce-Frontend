@@ -31,27 +31,21 @@ export default function ProductDetails() {
 
   const dispatch = useDispatch();
 
-  const handleAddToCart = () => {
-    const data = { productId: params.productId, size: selectedSize.name };
-    console.log(data);
-    dispatch(addItemToCart(data));
-    navigate("/cart");
-  };
-
   const { products } = useSelector((store) => store);
 
   useEffect(() => {
     const data = { productId: params.productId };
     dispatch(findProductsById(data));
-  }, [params.productId]);
+  }, [dispatch, params.productId]);
 
   const [similarProducts, setSimilarProducts] = useState([]);
 
   useEffect(() => {
-    if (products.product) {
+    if (products.product && products.product.category) {
+      // Add null check for category
       dispatch(
         findProducts({
-          category: products.product?.category.name,
+          category: products.product.category.name,
           colors: [],
           sizes: [],
           minPrice: 0,
@@ -71,6 +65,17 @@ export default function ProductDetails() {
       setSimilarProducts(products.products.content);
     }
   }, [products.products]);
+
+  if (!products.product) {
+    return null;
+  }
+
+  const handleAddToCart = () => {
+    const data = { productId: params.productId, size: selectedSize.name };
+    console.log(data);
+    dispatch(addItemToCart(data));
+    navigate("/cart");
+  };
 
   return (
     <div className="bg-white">

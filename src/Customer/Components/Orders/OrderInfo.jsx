@@ -6,14 +6,14 @@ import OrderTracker from "./OrderTracker";
 import AddressCard from "../Address/AddressCard";
 import { useDispatch, useSelector } from "react-redux";
 import { getOrderById } from "../../../State/Order/Action";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const OrderInfo = () => {
   const [activeStep, setActiveStep] = React.useState(0);
   const dispatch = useDispatch();
   const { orderId } = useParams();
   const { order } = useSelector((store) => store);
-  // console.log(order.order.shippingAddress);
+  const navigate = useNavigate();
   useEffect(() => {
     dispatch(getOrderById(orderId));
   }, []);
@@ -35,6 +35,7 @@ const OrderInfo = () => {
       }
     }
   }, [order]);
+  console.log("order.order?.orderItems", order.order?.orderItems);
 
   return (
     <div className="w-10/12 mx-auto mt-5">
@@ -71,7 +72,15 @@ const OrderInfo = () => {
               </p>
             </div>
           </div>
-          <Button color="secondary" sx={{ marginX: 5, fontSize: 18 }}>
+          <Button
+            color="secondary"
+            sx={{ marginX: 5, fontSize: 18 }}
+            onClick={() =>
+              navigate("/rating-review", {
+                state: { product: item?.product },
+              })
+            }
+          >
             <StarOutlineIcon /> &nbsp;&nbsp; Rate & Review Product
           </Button>
         </div>

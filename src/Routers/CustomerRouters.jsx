@@ -11,6 +11,7 @@ import Order from "../Customer/Components/Orders/Orders";
 import OrderInfo from "../Customer/Components/Orders/OrderInfo";
 import PaymentSuccess from "../Customer/Components/Payment/PaymentSuccess";
 import UserProfile from "../Customer/Components/User/UserProfile";
+import RatingReview from "../Customer/Components/Orders/RatingReview";
 const CustomerRouters = () => {
   return (
     <>
@@ -33,6 +34,7 @@ const CustomerRouters = () => {
           <Route path="/account/order/:orderId" element={<OrderInfo />} />
           <Route path="/payment/:orderId" element={<PaymentSuccess />} />
           <Route path="/profile" element={<UserProfile />} />
+          <Route path="/rating-review" element={<RatingReview />} />
         </Routes>
         <div>
           <Footer />

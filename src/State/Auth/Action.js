@@ -1,6 +1,9 @@
 import axios from "axios";
 import { API_BASE_URL } from "../../Config/apiConfig";
 import {
+  GET_ALL_USER_FAILURE,
+  GET_ALL_USER_REQUEST,
+  GET_ALL_USER_SUCCESS,
   GET_USER_FAILURE,
   GET_USER_REQUEST,
   GET_USER_SUCCESS,
@@ -12,6 +15,7 @@ import {
   REGISTER_REQUEST,
   REGISTER_SUCCESS,
 } from "./ActionType";
+import { wait } from "@testing-library/user-event/dist/utils";
 
 // const token = localStorage.getItem("jwt");
 
@@ -72,6 +76,22 @@ export const getUser = (jwt) => async (dispatch) => {
     dispatch(getUserSuccess(user));
   } catch (error) {
     dispatch(getUserFailure(error.message));
+  }
+};
+
+export const getAllUsers = (jwt) => async (dispatch) => {
+  dispatch({ type: GET_ALL_USER_REQUEST });
+  try {
+    const response = await axios.get(`${API_BASE_URL}/api/users/`, {
+      headers: {
+        Authorization: `Bearer ${jwt}`,
+      },
+    });
+    const allUsers = response.data;
+    console.log("get all users", allUsers);
+    dispatch({ type: GET_ALL_USER_SUCCESS, payload: allUsers });
+  } catch (error) {
+    dispatch({ type: GET_ALL_USER_FAILURE, payload: error });
   }
 };
 
