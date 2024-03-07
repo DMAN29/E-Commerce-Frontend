@@ -21,6 +21,7 @@ const CreateProductForm = () => {
     { name: "L", quantity: 0 },
     { name: "XL", quantity: 0 },
   ];
+  const [discountedPrice, setDiscountedPrice] = useState();
   const [productData, setProductData] = useState({
     imageUrl: "",
     brand: "",
@@ -55,7 +56,16 @@ const CreateProductForm = () => {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(createProduct(productData));
+    const originalPrice = Math.floor(
+      discountedPrice / (1 - productData.discountedPrecent / 100)
+    );
+    console.log("originalPrice", originalPrice);
+    const updatedProductData = {
+      ...productData,
+      price: originalPrice,
+    };
+
+    dispatch(createProduct(updatedProductData));
     alert("Product Added Successfully");
     navigate("/admin");
   };
@@ -114,6 +124,7 @@ const CreateProductForm = () => {
               name="brand"
               value={productData.brand}
               onChange={handleChange}
+              required
             />
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -123,6 +134,7 @@ const CreateProductForm = () => {
               name="title"
               value={productData.title}
               onChange={handleChange}
+              required
             />
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -132,6 +144,7 @@ const CreateProductForm = () => {
               name="imageUrl"
               value={productData.imageUrl}
               onChange={handleChange}
+              required
             />
           </Grid>
           <Grid item xs={12} sm={6}>
@@ -141,15 +154,17 @@ const CreateProductForm = () => {
               name="color"
               value={productData.color}
               onChange={handleChange}
+              required
             />
           </Grid>
           <Grid item xs={12} sm={4}>
             <TextField
               fullWidth
-              label="Price"
-              name="price"
-              value={productData.price}
-              onChange={handleChange}
+              label="Discounted Price"
+              name="Discounted Price"
+              value={discountedPrice}
+              onChange={(e) => setDiscountedPrice(e.target.value)}
+              required
             />
           </Grid>
           <Grid item xs={12} sm={4}>
@@ -159,17 +174,20 @@ const CreateProductForm = () => {
               name="discountedPrecent"
               value={productData.discountedPrecent}
               onChange={handleChange}
+              required
             />
           </Grid>
           <Grid item xs={12} sm={4}>
             <TextField
               fullWidth
-              label="Discounted Price"
-              name="Discounted Price"
-              value={Math.floor(
-                productData.price -
-                  (productData.discountedPrecent / 100) * productData.price
-              )}
+              label="Price"
+              name="price"
+              value={
+                Math.floor(
+                  discountedPrice / (1 - productData.discountedPrecent / 100)
+                ) || ""
+              }
+              // onChange={handleChange}
               inputProps={{ readOnly: true }}
             />
           </Grid>
@@ -181,6 +199,7 @@ const CreateProductForm = () => {
                 value={productData.topLevelCategory}
                 onChange={handleChange}
                 label="Top Level Category"
+                required
               >
                 <MenuItem value="men">Men</MenuItem>
                 <MenuItem value="women">Women</MenuItem>
@@ -195,6 +214,7 @@ const CreateProductForm = () => {
                 value={productData.secondLevelCategory}
                 onChange={handleChange}
                 label="Second Level Category"
+                required
               >
                 <MenuItem value="clothing">Clothing</MenuItem>
                 <MenuItem value="accessories">Accessories</MenuItem>
@@ -209,6 +229,7 @@ const CreateProductForm = () => {
                 value={productData.thirdLevelCategory}
                 onChange={handleChange}
                 label="Third Level Category"
+                required
               >
                 {renderThirdLevelOptions()}
               </Select>
@@ -224,6 +245,7 @@ const CreateProductForm = () => {
               rows={3}
               onChange={handleChange}
               value={productData.description}
+              required
             />
           </Grid>
           {productData.size.map((size, index) => (

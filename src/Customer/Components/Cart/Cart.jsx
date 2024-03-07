@@ -4,7 +4,6 @@ import CartItem from "./CartItem";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getCart } from "../../../State/Cart/Action";
-import { store } from "../../../State/store";
 const Cart = () => {
   const navigate = useNavigate();
 
