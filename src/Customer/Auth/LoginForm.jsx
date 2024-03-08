@@ -15,8 +15,14 @@ const LoginForm = () => {
       email: data.get("email"),
       password: data.get("password"),
     };
-    dispatch(login(userData));
-    console.log("userData", userData);
+    dispatch(login(userData))
+      .then(() => {
+        console.log("userData", userData);
+        window.location.reload();
+      })
+      .catch((error) => {
+        console.error("Login failed:", error);
+      });
   };
   return (
     <>

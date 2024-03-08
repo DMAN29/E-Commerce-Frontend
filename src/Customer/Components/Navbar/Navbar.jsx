@@ -30,7 +30,7 @@ export default function Navbar() {
   const { auth, cart } = useSelector((store) => store);
   const dispatch = useDispatch();
   const location = useLocation();
-  // console.log("hello go cart", cart.cartItems.length);
+
   const handelUserClick = (e) => {
     setAnchorEl(e.currentTarget);
   };
@@ -54,6 +54,7 @@ export default function Navbar() {
     dispatch(logout());
     navigate("/");
     handleCloseUserMenu();
+    window.location.reload();
   };
 
   useEffect(() => {
@@ -246,7 +247,6 @@ export default function Navbar() {
           </div>
         </Dialog>
       </Transition.Root>
-
       {/* ----------------------------------------Laptop view --------------------------------------------------------------------- */}
       <header className="relative bg-white">
         <nav aria-label="Top" className="mx-auto  ">

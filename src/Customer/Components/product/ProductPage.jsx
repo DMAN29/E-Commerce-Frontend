@@ -18,27 +18,25 @@ import {
   Radio,
   RadioGroup,
 } from "@mui/material";
-// import { lehngaCholi } from "../../../Data/Women/lenghaChole";
-// import {men_shirt} from "../../../Data/Men/men_shirt.json"
 import TuneIcon from "@mui/icons-material/Tune";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { findProducts } from "../../../State/Product/Action";
-import { store } from "../../../State/store";
 
 const sortOptions = [
-  { name: "Price: Low to High", href: "#", current: false },
-  { name: "Price: High to Low", href: "#", current: false },
+  { name: "Price: Low to High", value: "price_low" },
+  { name: "Price: High to Low", value: "price_high" },
 ];
-
 const filters = [
   {
     id: "color",
     name: "Color",
     options: [
       { value: "white", label: "White" },
-      { value: "beige", label: "Beige" },
       { value: "blue", label: "Blue" },
+      { value: "red", label: "Red" },
+      { value: "yellow", label: "Yellow" },
+      { value: "orange", label: "Orange" },
       { value: "brown", label: "Brown" },
       { value: "green", label: "Green" },
       { value: "purple", label: "Purple" },
@@ -51,6 +49,7 @@ const filters = [
       { value: "S", label: "S" },
       { value: "M", label: "M" },
       { value: "L", label: "L" },
+      { value: "XL", label: "XL" },
     ],
   },
 ];
@@ -95,6 +94,9 @@ function classNames(...classes) {
 
 export default function ProductPage() {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+  const [selectedSortOption, setSelectedSortOption] = useState(
+    sortOptions[0].value
+  ); // Default to first sort option
   const location = useLocation();
   const navigate = useNavigate();
   const param = useParams();
@@ -111,7 +113,7 @@ export default function ProductPage() {
   const pageNumber = searchParams.get("page") || 1;
   const stock = searchParams.get("stock");
 
-  const handlePaginationChange = (event,value) => {
+  const handlePaginationChange = (event, value) => {
     const searchParams = new URLSearchParams(location.search);
     searchParams.set("page", value);
     const query = searchParams.toString();
@@ -154,7 +156,7 @@ export default function ProductPage() {
       minPrice,
       maxPrice,
       minDiscount: discount || 0,
-      sort: sortValue || "price_low",
+      sort: selectedSortOption,
       pageNumber: pageNumber - 1,
       pageSize: 12,
       stock: stock,
@@ -167,10 +169,18 @@ export default function ProductPage() {
     sizeValue,
     price,
     discount,
-    sortValue,
+    selectedSortOption,
     pageNumber,
     stock,
   ]);
+  const handleSortChange = (value) => {
+    setSelectedSortOption(value);
+
+    const searchParams = new URLSearchParams(location.search);
+    searchParams.set("sort", value);
+    const query = searchParams.toString();
+    navigate({ search: `?${query}` });
+  };
   return (
     <div className="bg-white">
       <div>
@@ -372,8 +382,8 @@ export default function ProductPage() {
                       {sortOptions.map((option) => (
                         <Menu.Item key={option.name}>
                           {({ active }) => (
-                            <a
-                              href={option.href}
+                            <button
+                              onClick={() => handleSortChange(option.value)}
                               className={classNames(
                                 option.current
                                   ? "font-medium text-gray-900"
@@ -383,7 +393,7 @@ export default function ProductPage() {
                               )}
                             >
                               {option.name}
-                            </a>
+                            </button>
                           )}
                         </Menu.Item>
                       ))}

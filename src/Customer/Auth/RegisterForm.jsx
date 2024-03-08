@@ -24,8 +24,14 @@ const RegisterForm = () => {
       password: data.get("password"),
       role: "customer",
     };
-    dispatch(register(userData));
-    console.log("userData", userData);
+    dispatch(register(userData))
+      .then(() => {
+        console.log("userData", userData);
+        window.location.reload();
+      })
+      .catch((error) => {
+        console.error("Registration failed:", error);
+      });
   };
   return (
     <>

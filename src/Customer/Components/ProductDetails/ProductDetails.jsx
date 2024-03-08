@@ -4,13 +4,10 @@ import { RadioGroup } from "@headlessui/react";
 import ReviewCard from "./ReviewCard";
 import { Button, Grid, LinearProgress, Rating } from "@mui/material";
 
-import ProductCard from "../product/ProductCard";
 import { useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { findProducts, findProductsById } from "../../../State/Product/Action";
 import { addItemToCart } from "../../../State/Cart/Action";
-import { dress } from "../../../Data/Women/dress";
-import CarouselCards from "../home/CarouselCards";
 import SectionCarousel from "../home/SectionCarousel";
 
 const reviews = { href: "#", average: 4, totalCount: 117 };
@@ -356,7 +353,7 @@ export default function ProductDetails() {
       <h2 className="font-bold text-2xl mt-10 mx-auto w-10/12 ">
         Similar Products
       </h2>
-      <div className="flex flex-wrap w-10/12 mx-auto mb-10 ">
+      <div className="flex flex-wrap mx-auto mb-10 ">
         <SectionCarousel data={similarProducts} />
       </div>
     </div>

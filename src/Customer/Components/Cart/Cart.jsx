@@ -65,6 +65,7 @@ const Cart = () => {
                 color: "white",
               }}
               color="secondary"
+              disabled={cart.cart?.totalItem === 0}
             >
               {" "}
               Checkout

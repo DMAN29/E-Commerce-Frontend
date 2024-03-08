@@ -7,7 +7,7 @@ const CarouselCards = ({ product }) => {
   return (
     <>
       <div
-        className="cursor-pointer bg-white flex flex-col items-center shadow-lg overflow-hidden w-60 mx-3 rounded-lg"
+        className="cursor-pointer bg-white flex flex-col items-center shadow-lg overflow-hidden w-60 mx-3 rounded-l h-80 rounded-lg"
         onClick={() => navigate(`/product/${product.id}`)}
       >
         <div className="h-52 w-40">

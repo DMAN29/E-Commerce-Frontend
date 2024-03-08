@@ -66,13 +66,16 @@ const Homepage = () => {
   return (
     <>
       <MainCarousel />
-      {categories.map(({ state, section }) => (
-        <SectionCarousel
-          key={section}
-          data={stateData[state]}
-          section={section}
-        />
-      ))}
+      {categories.map(
+        ({ state, section }) =>
+          stateData[state].length != 0 && (
+            <SectionCarousel
+              key={section}
+              data={stateData[state]}
+              section={section}
+            />
+          )
+      )}
     </>
   );
 };
