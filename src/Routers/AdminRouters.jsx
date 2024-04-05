@@ -18,7 +18,9 @@ const AdminRouters = () => {
       <Routes>
         <Route
           path="/*"
-          element={auth.user?.role === "admin" ? <Admin /> : <Unauthorize />}
+          element={
+            auth.user?.role === "ROLE_ADMIN" ? <Admin /> : <Unauthorize />
+          }
         />
       </Routes>
     </>

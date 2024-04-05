@@ -22,7 +22,6 @@ const RegisterForm = () => {
       lastName: data.get("lastName"),
       email: data.get("email"),
       password: data.get("password"),
-      role: "customer",
     };
     dispatch(register(userData))
       .then(() => {
