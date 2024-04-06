@@ -15,7 +15,6 @@ import {
   REGISTER_REQUEST,
   REGISTER_SUCCESS,
 } from "./ActionType";
-import { wait } from "@testing-library/user-event/dist/utils";
 
 // const token = localStorage.getItem("jwt");
 

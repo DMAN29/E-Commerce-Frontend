@@ -18,7 +18,7 @@ const LoginForm = () => {
     dispatch(login(userData))
       .then(() => {
         console.log("userData", userData);
-        window.location.reload();
+        // window.location.reload();
       })
       .catch((error) => {
         console.error("Login failed:", error);
