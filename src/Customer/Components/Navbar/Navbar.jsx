@@ -50,11 +50,14 @@ export default function Navbar() {
     close();
   };
 
+  const reload = () => {
+    window.location.reload();
+  };
   const handleLogout = () => {
     dispatch(logout());
     navigate("/");
     handleCloseUserMenu();
-    window.location.reload();
+    reload();
   };
 
   useEffect(() => {
@@ -67,6 +70,7 @@ export default function Navbar() {
     }
     if (location.pathname === "/login" || location.pathname === "/register") {
       navigate(-1);
+      reload();
     }
   }, [auth.user]);
 
