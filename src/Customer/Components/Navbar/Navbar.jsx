@@ -70,7 +70,7 @@ export default function Navbar() {
     }
     if (location.pathname === "/login" || location.pathname === "/register") {
       navigate(-1);
-      reload();
+      // reload();
     }
   }, [auth.user]);
 
