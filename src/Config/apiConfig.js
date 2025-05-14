@@ -1,11 +1,8 @@
 import axios from "axios";
 
-// const awsBackend =
-//   "http://shopnow-env.eba-z7cqpr2m.ap-southeast-2.elasticbeanstalk.com";
-// export const API_BASE_URL = `${awsBackend}`;
-
-const localhost = "http://localhost:5000";
-export const API_BASE_URL = `${localhost}`;
+// const backend = "http://localhost:5000";
+const backend = `https://shop-now-uxii.onrender.com`;
+export const API_BASE_URL = `${backend}`;
 
 const jwt = localStorage.getItem("jwt");
 export const api = axios.create({
