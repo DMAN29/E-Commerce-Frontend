@@ -446,7 +446,7 @@ export default function Navbar() {
                         >
                           Profile
                         </MenuItem>
-                        {auth.user?.role === "admin" ? (
+                        {auth.user?.role === "ROLE_ADMIN" ? (
                           <MenuItem
                             onClick={() => {
                               navigate("/admin");
