@@ -513,5 +513,3 @@ export default function Navbar() {
     </div>
   );
 }
-
-// commit
