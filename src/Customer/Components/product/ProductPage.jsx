@@ -92,6 +92,73 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
+const mockProducts = {
+  0: {
+    description: "Men Regular Mid Rise Blue Jeans",
+    color: "Blue",
+    brand: "RED TAPE",
+    discountPercent: 85,
+    discountedPrice: 899,
+    id: 52,
+    imageUrl:
+      "https://freakins.com/cdn/shop/products/FreakinsMenswear-04416-min.jpg?v=1749908167",
+    price: 5993,
+    quantity: 80,
+    title: "Men Regular Mid Rise Blue Jeans",
+  },
+  1: {
+    description: "Men Loose Fit High Rise Dark Grey Jeans",
+    color: "Blue",
+    brand: "KILLER ",
+    discountPercent: 43,
+    discountedPrice: 900,
+    id: 2,
+    imageUrl:
+      "https://imagescdn.peterengland.com/img/app/product/3/39827003-16637360.jpg?auto=format&w=390",
+    price: 1578,
+    quantity: 80,
+    title: "Men Loose Fit High Rise Dark Grey Jeans",
+  },
+  2: {
+    description: "Men Loose Fit Mid Rise Grey Jeans",
+    color: "Gray",
+    brand: "STUDIO NEXX",
+    discountPercent: 61,
+    discountedPrice: 992,
+    id: 54,
+    imageUrl:
+      "https://www.jiomart.com/images/product/original/rv46bnyats/qarsh-slim-fit-grey-jeans-for-men-32-product-images-rv46bnyats-2-202305311940.png?im=Resize=(500,630)",
+    price: 2543,
+    quantity: 160,
+    title: "Men Loose Fit Mid Rise Grey Jeans",
+  },
+  3: {
+    description: "Men Slim Mid Rise Blue Jeans",
+    color: "Blue",
+    brand: "U.S. POLO ASSN. ",
+    discountPercent: 56,
+    discountedPrice: 1011,
+    id: 1,
+    imageUrl: "https://m.media-amazon.com/images/I/81Sqh7EKwxL._UY1100_.jpg",
+    price: 2297,
+    quantity: 40,
+    title: "Men Slim Mid Rise Blue Jeans",
+  },
+  4: {
+    description: "Men Regular Mid Rise Blue Jeans",
+    color: "Black",
+    brand: "Bene Kleed",
+    discountPercent: 66,
+    discountedPrice: 1018,
+    id: 53,
+    imageUrl:
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTRLZcAj4HsPyWW2oRi3_l7kZpOQqKWmQUu7Q&s",
+    price: 2994,
+    quantity: 200,
+    title: "Men Regular Mid Rise Blue Jeans",
+  },
+};
+
 export default function ProductPage() {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [selectedSortOption, setSelectedSortOption] = useState(
@@ -102,6 +169,9 @@ export default function ProductPage() {
   const param = useParams();
   const dispatch = useDispatch();
   const { products } = useSelector((store) => store);
+  // {
+  //   console.log("products", products);
+  // }
 
   const decodedQueryString = decodeURIComponent(location.search);
   const searchParams = new URLSearchParams(decodedQueryString);
@@ -215,9 +285,7 @@ export default function ProductPage() {
               >
                 <Dialog.Panel className="relative ml-auto flex h-full w-full max-w-xs flex-col overflow-y-auto bg-white py-4 pb-12 shadow-xl">
                   <div className="flex items-center justify-between px-4">
-                    <h2 className="text-lg font-medium text-gray-900">
-                      Filters
-                    </h2>
+                    <h2 className="font-medium text-gray-900">Filters</h2>
                     <button
                       type="button"
                       className="-mr-2 flex h-10 w-10 items-center justify-center rounded-md bg-white p-2 text-gray-400"
@@ -229,12 +297,12 @@ export default function ProductPage() {
                   </div>
 
                   {/* Filters */}
-                  <form className="mt-4 border-t border-gray-200">
+                  <form className="mt-4 border-t border-gray-200 text-xs">
                     {filters.map((section) => (
                       <Disclosure
                         as="div"
                         key={section.id}
-                        className="border-t border-gray-200 px-4 py-6"
+                        className="border-t border-gray-200 px-2 py-3"
                       >
                         {({ open }) => (
                           <>
@@ -287,6 +355,7 @@ export default function ProductPage() {
                         )}
                       </Disclosure>
                     ))}
+                    <hr />
                     {singleFilter.map((section) => (
                       <Disclosure
                         as="div"
@@ -295,11 +364,15 @@ export default function ProductPage() {
                       >
                         {({ open }) => (
                           <>
-                            <h3 className="-my-3 flow-root">
-                              <Disclosure.Button className="flex w-full items-center justify-between bg-white py-3 text-sm text-gray-400 hover:text-gray-500">
+                            <h3 className="-my-6 mx-2 flow-root">
+                              <Disclosure.Button className="flex w-full items-center justify-between bg-white py-3 text-gray-400 hover:text-gray-500">
                                 <FormLabel
                                   id="demo-radio-buttons-group-label"
-                                  sx={{ color: "black", fontWeight: "medium" }}
+                                  sx={{
+                                    color: "black",
+                                    fontWeight: "medium",
+                                    fontSize: "12px",
+                                  }}
                                 >
                                   {section.name}
                                 </FormLabel>
@@ -351,8 +424,8 @@ export default function ProductPage() {
         </Transition.Root>
 
         <main className="mx-auto w-11/12 px-4 sm:px-6 lg:px-8">
-          <div className="flex items-baseline justify-between border-b border-gray-200 pb-6 pt-24">
-            <h1 className="text-4xl font-bold tracking-tight text-gray-900">
+          <div className="flex items-baseline justify-between border-b border-gray-200 pb-6 pt-8 md:pt-24">
+            <h1 className="text-xl md:text-4xl font-bold tracking-tight text-gray-900">
               Products
             </h1>
 
@@ -407,7 +480,7 @@ export default function ProductPage() {
                 className="-m-2 ml-5 p-2 text-gray-400 hover:text-gray-500 sm:ml-7"
               >
                 <span className="sr-only">View grid</span>
-                <Squares2X2Icon className="h-5 w-5" aria-hidden="true" />
+                {/* <Squares2X2Icon className="h-5 w-5" aria-hidden="true" /> */}
               </button>
               <button
                 type="button"
@@ -555,8 +628,18 @@ export default function ProductPage() {
               {/* Product grid */}
               <div className="lg:col-span-3 items-center">
                 <Grid container>
-                  {products.products?.content?.map((data) => (
-                    <Grid item xs={12} sm={6} lg={3} md={4}>
+                  {/* {products.products?.content?.map((data) => ( */}
+                  {(products.products?.content
+                    ? Object.values(products.products.content)
+                    : Object.values(mockProducts)
+                  ).map((data) => (
+                    <Grid
+                      item
+                      xs={6}
+                      lg={3}
+                      md={4}
+                      // style  ={{ border: "1px solid #e5e7eb" }}
+                    >
                       <ProductCard product={data} />
                     </Grid>
                   ))}

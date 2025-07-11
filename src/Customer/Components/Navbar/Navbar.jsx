@@ -255,7 +255,7 @@ export default function Navbar() {
       <header className="relative bg-white">
         <nav aria-label="Top" className="mx-auto  ">
           <div className="border-b border-gray-200">
-            <div className="flex h-16 items-center px-11">
+            <div className="flex h-16 items-center px-2 lg:px-11">
               <button
                 type="button"
                 className="rounded-md bg-white p-2 text-gray-400 lg:hidden"
@@ -409,7 +409,7 @@ export default function Navbar() {
               </Popover.Group>
 
               <div className="ml-auto flex items-center">
-                <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
+                <div className="lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
                   {auth.user?.firstName ? (
                     <div>
                       <Avatar

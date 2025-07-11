@@ -8,18 +8,18 @@ const ProductCard = ({ product }) => {
     <>
       <div
         onClick={() => navigate(`/product/${product.id}`)}
-        className="w-60 m-3 cursor-pointer mx-auto  shadow-gray-500 hover:shadow-xl"
+        className="w-[80%] md:w-50  m-1 md:m-3 cursor-pointer mx-auto  shadow-gray-500 hover:shadow-xl text-xs md:text-base border"
       >
-        <div className="h-80">
+        <div className="h-40 md:h-80">
           <img
             className="w-full h-full object-cover object-top-left"
             src={product.imageUrl}
             alt=""
           />
         </div>
-        <div className="p-3 transition ease-out  bg-white delay-150 hover:-translate-y-5 ">
-          <h4 className="font-bold text-gray-600">{product.brand}</h4>
-          <p>{product.title}</p>
+        <div className="p-1 md:p-3 transition ease-out  bg-white delay-150 hover:-translate-y-5 ">
+          <h4 className=" font-bold text-gray-600">{product.brand}</h4>
+          <p className="">{product.title}</p>
           <div className="space-x-3">
             <span className="font-semibold">
               {/* {product.price*(100-product.discountPersent)/100}*/}
